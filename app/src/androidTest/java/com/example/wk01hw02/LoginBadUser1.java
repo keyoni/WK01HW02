@@ -30,13 +30,13 @@ import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class UsernameLoginTest {
+public class LoginBadUser1 {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void usernameLoginTest() {
+    public void loginBadUser1() {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.tvUsername),
                         childAtPosition(
@@ -45,7 +45,7 @@ public class UsernameLoginTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("user2"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Bret"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.tvPassword),
@@ -55,7 +55,7 @@ public class UsernameLoginTest {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("password2"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("password"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.btnLogin), withText("Login"),
@@ -67,11 +67,11 @@ public class UsernameLoginTest {
                         isDisplayed()));
         materialButton.perform(click());
 
-        ViewInteraction textView = onView(
-                allOf(withId(R.id.tvGreeting), withText("Welcome user2!"),
+        ViewInteraction button = onView(
+                allOf(withId(R.id.btnLogin), withText("LOGIN"),
                         withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        textView.check(matches(withText("Welcome user2!")));
+        button.check(matches(isDisplayed()));
     }
 
     private static Matcher<View> childAtPosition(

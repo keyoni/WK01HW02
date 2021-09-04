@@ -2,22 +2,22 @@ package com.example.wk01hw02;
 
 public class User {
 
-    private int userId;
+    private int id;
     private String username;
     private String password;
 
-    public User(int userId, String username, String password) {
-        this.userId = userId;
+    public User(int id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getId() {
+        return id;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

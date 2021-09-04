@@ -35,7 +35,7 @@ public class PostActivity extends AppCompatActivity {
         int userId = getIntent().getIntExtra(ACTIVITY_LABEL,0);
         String username = getIntent().getStringExtra(ACTIVITY_LABEL_NAME);
 
-        userGreeting(username);
+        userGreeting(username, userId);
 
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -80,9 +80,9 @@ public class PostActivity extends AppCompatActivity {
 
     }
 
-    public void userGreeting(String username) {
+    public void userGreeting(String username, int userId) {
 
-        greeting.setText(new StringBuilder().append("Welcome ").append(username).append("!").toString());
+        greeting.setText(new StringBuilder().append("Welcome ").append(username).append(" User: ").append(userId).append("!").toString());
 
         Toast.makeText(PostActivity.this, "Welcome " + username + "!", Toast.LENGTH_LONG).show();
 

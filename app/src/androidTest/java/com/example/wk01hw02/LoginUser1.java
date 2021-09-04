@@ -21,20 +21,22 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class LoginTest {
+public class LoginUser1 {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
     @Test
-    public void loginTest() {
+    public void loginUser1() {
         ViewInteraction appCompatEditText = onView(
                 allOf(withId(R.id.tvUsername),
                         childAtPosition(
@@ -43,7 +45,7 @@ public class LoginTest {
                                         0),
                                 0),
                         isDisplayed()));
-        appCompatEditText.perform(replaceText("user1"), closeSoftKeyboard());
+        appCompatEditText.perform(replaceText("Bret"), closeSoftKeyboard());
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf(withId(R.id.tvPassword),
@@ -53,7 +55,7 @@ public class LoginTest {
                                         0),
                                 2),
                         isDisplayed()));
-        appCompatEditText2.perform(replaceText("password"), closeSoftKeyboard());
+        appCompatEditText2.perform(replaceText("password1"), closeSoftKeyboard());
 
         ViewInteraction materialButton = onView(
                 allOf(withId(R.id.btnLogin), withText("Login"),
@@ -65,35 +67,11 @@ public class LoginTest {
                         isDisplayed()));
         materialButton.perform(click());
 
-        ViewInteraction appCompatEditText3 = onView(
-                allOf(withId(R.id.tvPassword), withText("password"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
+        ViewInteraction textView = onView(
+                allOf(withId(R.id.tvGreeting), withText("Welcome Bret User: 1!"),
+                        withParent(withParent(withId(android.R.id.content))),
                         isDisplayed()));
-        appCompatEditText3.perform(replaceText("password1"));
-
-        ViewInteraction appCompatEditText4 = onView(
-                allOf(withId(R.id.tvPassword), withText("password1"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                2),
-                        isDisplayed()));
-        appCompatEditText4.perform(closeSoftKeyboard());
-
-        ViewInteraction materialButton2 = onView(
-                allOf(withId(R.id.btnLogin), withText("Login"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(android.R.id.content),
-                                        0),
-                                1),
-                        isDisplayed()));
-        materialButton2.perform(click());
+        textView.check(matches(withText("Welcome Bret User: 1!")));
     }
 
     private static Matcher<View> childAtPosition(

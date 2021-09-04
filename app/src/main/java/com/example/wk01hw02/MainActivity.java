@@ -9,11 +9,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.ContentValues.TAG;
 
@@ -55,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                             passwordEt.setBackgroundTintList(ContextCompat.getColorStateList(getApplicationContext(), R.color.green_good));
                             Toast.makeText(MainActivity.this, "Welcome " + username + "!", Toast.LENGTH_LONG).show();
 
-                            login(user.getUserId(), user.getUsername());
+                            login(user.getId(), user.getUsername());
                         } else {
                            badPassword();
                         }
@@ -72,11 +77,33 @@ public class MainActivity extends AppCompatActivity {
 
     public ArrayList<User> createUsers() {
         ArrayList<User> users = new ArrayList<>();
-        for( int i = 0; i < 10; i++) {
-            User tempUser = new User(i+1,"user" + (i + 1), "password" + (i +1));
-            users.add(tempUser);
-            Log.d(TAG, (tempUser.getUsername()));
+
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://jsonplaceholder.typicode.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+
+        Call<List<User>> call = jsonPlaceHolderApi.getUsers();
+         call.enqueue(new Callback<List<User>>() {
+             @Override
+             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                 if (!response.isSuccessful()) {
+                     return;
+                 }
+                 List<User> userList = response.body();
+                 for (User user : userList) {
+                 User tempUser = new User(user.getId(), user.getUsername(), "password" + (user.getId()));
+                 users.add(tempUser);
+                 Log.d(TAG, (tempUser.getUsername()));
+             }
+         }
+        @Override
+        public void onFailure(Call<List<User>> call, Throwable t) {
         }
+    });
+
         return users;
     }
 
